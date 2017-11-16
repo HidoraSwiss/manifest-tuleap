@@ -1,0 +1,49 @@
+type: install
+version: 1.4
+name: Tuleap
+displayName: Tuleap
+homepage: https://www.tuleap.org/
+logo: https://www.tuleap.org/assets/img/logo-tuleap-flat-orange-white.svg
+description: Software development & agile management
+
+globals:
+  DB_ROOT_PASS: ${fn.password(15)}
+
+settings:
+  fields:
+  - type: string
+    name: DOMAIN_NAME
+    caption: Domain name
+    required: true
+    placeholder: tuleap.hidora.com
+
+nodes:
+  - image: enalean/tuleap-aio
+    extip: true
+    count: 1
+    cloudlets: 16
+    nodeGroup: cp
+    links:
+      - sqldb:sqldb
+    env:
+      VIRTUAL_HOST: ${settings.DOMAIN_NAME}
+      DB_HOST: sqldb
+      MYSQL_ROOT_PASSWORD: ${globals.DB_ROOT_PASS}
+    volumes:
+      - /data
+      - /usr/share/tuleap
+      - /etc/nginx
+
+  - image: mysql:5.6
+    count: 1
+    cloudlets: 16
+    nodeGroup: sqldb
+    cmd: --sql-mode="NO_ENGINE_SUBSTITUTION"
+    env:
+      MYSQL_ROOT_PASSWORD: ${globals.DB_ROOT_PASS}
+
+success: |
+  ## Tuleap is correctly installed
+  You will be able to use it in a few seconds, when the database is ready.
+
+  You can find the admin's password in `/data/root/.tuleap_passwd`.
