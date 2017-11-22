@@ -1,6 +1,7 @@
 type: install
 version: 1.4
 name: Tuleap
+categories: ["apps/project-management", "apps/dev-and-admin-tools"]
 displayName: Tuleap
 homepage: https://www.tuleap.org/
 logo: https://www.tuleap.org/assets/img/logo-tuleap-flat-orange-white.svg
