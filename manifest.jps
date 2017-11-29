@@ -6,6 +6,7 @@ displayName: Tuleap
 homepage: https://www.tuleap.org/
 logo: https://www.tuleap.org/assets/img/logo-tuleap-flat-orange-white.svg
 description: Software development & agile management
+ssl: true
 
 globals:
   DB_ROOT_PASS: ${fn.password(15)}
@@ -20,7 +21,6 @@ settings:
 
 nodes:
   - image: enalean/tuleap-aio
-    extip: true
     count: 1
     cloudlets: 16
     nodeGroup: cp
@@ -42,6 +42,25 @@ nodes:
     cmd: --sql-mode="NO_ENGINE_SUBSTITUTION"
     env:
       MYSQL_ROOT_PASSWORD: ${globals.DB_ROOT_PASS}
+
+onInstall:
+
+  - log: Configure NGINX
+  - cmd[cp]:
+    - wget https://raw.githubusercontent.com/HidoraSwiss/manifest-tuleap/master/nginx-tuleap.conf -O /etc/nginx/conf.d/tuleap.conf &>> /var/log/run.log
+    - sed -i "s/SERVER_NAME/${env.domain}/g" /etc/nginx/conf.d/tuleap.conf
+
+  - log: Configure Tuleap with reverse proxy
+  - cmd[cp]:
+    - sleep 40
+    - ls /data/etc/tuleap
+    - sed -i "s/sys_trusted_proxies = ''/sys_trusted_proxies = '10.100.0.20\/24'/g" /data/etc/tuleap/conf/local.inc
+
+  - log: Set a fancy red theme for Tuleap
+  - cmd[cp]:
+    - sed -i "s/sys_default_theme_variant = 'FlamingParrot_Orange'/sys_default_theme_variant = 'FlamingParrot_DarkRed'/g" /data/etc/tuleap/conf/local.inc
+    
+  - api [cp]: jelastic.environment.control.RestartNodesByGroup
 
 success: |
   ## Tuleap is correctly installed
