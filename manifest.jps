@@ -4,7 +4,7 @@ name: Tuleap
 categories: ["apps/project-management", "apps/dev-and-admin-tools"]
 displayName: Tuleap
 homepage: https://www.tuleap.org/
-logo: https://www.tuleap.org/assets/img/logo-tuleap-flat-orange-white.svg
+logo: https://github.com/HidoraSwiss/manifest-tuleap/raw/master/B0650CE4A6B945628FD115FB2B22A014.png
 description: Software development & agile management
 ssl: true
 
