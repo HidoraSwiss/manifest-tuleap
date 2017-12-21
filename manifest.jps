@@ -22,7 +22,7 @@ settings:
 nodes:
   - image: enalean/tuleap-aio
     count: 1
-    cloudlets: 16
+    cloudlets: 8
     nodeGroup: cp
     links:
       - sqldb:sqldb
@@ -37,7 +37,7 @@ nodes:
 
   - image: mysql:5.6
     count: 1
-    cloudlets: 16
+    cloudlets: 8
     nodeGroup: sqldb
     cmd: --sql-mode="NO_ENGINE_SUBSTITUTION"
     env:
@@ -59,7 +59,7 @@ onInstall:
   - log: Set a fancy red theme for Tuleap
   - cmd[cp]:
     - sed -i "s/sys_default_theme_variant = 'FlamingParrot_Orange'/sys_default_theme_variant = 'FlamingParrot_DarkRed'/g" /data/etc/tuleap/conf/local.inc
-    
+
   - api [cp]: jelastic.environment.control.RestartNodesByGroup
 
 success: |
