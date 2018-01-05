@@ -56,6 +56,16 @@ onInstall:
     - ls /data/etc/tuleap
     - sed -i "s/sys_trusted_proxies = ''/sys_trusted_proxies = '10.100.0.20\/24'/g" /data/etc/tuleap/conf/local.inc
 
+  - log: Add & Configure endpoint for git SSH
+  - script:
+      script: https://raw.githubusercontent.com/HidoraSwiss/manifest-tuleap/master/scripts/addEndpoint.js
+      params:
+        nodeId: ${nodes.cp.first.id}
+        protocol: TCP
+        port: 22
+        name: git SSH
+      type: js
+
   - log: Set a fancy red theme for Tuleap
   - cmd[cp]:
     - sed -i "s/sys_default_theme_variant = 'FlamingParrot_Orange'/sys_default_theme_variant = 'FlamingParrot_DarkRed'/g" /data/etc/tuleap/conf/local.inc
