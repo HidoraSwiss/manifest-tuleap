@@ -55,6 +55,7 @@ onInstall:
     - sleep 40
     - ls /data/etc/tuleap
     - sed -i "s/sys_trusted_proxies = ''/sys_trusted_proxies = '10.100.0.20\/24'/g" /data/etc/tuleap/conf/local.inc
+    - echo -e 'LC_ALL="en_US.UTF-8"\nLANGUAGE="en_US.UTF-8"\nLANG="en_US.UTF-8"' >> /etc/environment
 
   - log: Add & Configure endpoint for git SSH
   - script:
